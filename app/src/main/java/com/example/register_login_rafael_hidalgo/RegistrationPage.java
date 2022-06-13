@@ -35,7 +35,8 @@ public class RegistrationPage extends AppCompatActivity {
         Button btnRegister = (Button) findViewById(R.id.btnNewRegister);
 
 
-        //used this site to help implement the code for the date text entry https://www.youtube.com/watch?v=Sce4EKklwKE&ab_channel=TechProgrammingIdeas
+        //used this site to help implement the code for the date text entry
+        // https://www.youtube.com/watch?v=Sce4EKklwKE&ab_channel=TechProgrammingIdeas
         //This ensures that the date inputted will match the MM/DD/YYY format
         dateOfBirth.addTextChangedListener(new TextWatcher() {
 
@@ -118,7 +119,8 @@ public class RegistrationPage extends AppCompatActivity {
                 String newPassword = password.getText().toString();
 
 
-                //This calls on a program to determine if all entries are valid. If not valid, the program ends with "return". If Valid,
+                //This calls on a program to determine if all entries are valid. If not valid,
+                // the program ends with "return". If Valid,
                 //the user data is then saved into an encrypted shared preferences.
                 if (!isValidEntry(newUserFirstName, newUserLastName, newUserDateOfBirth, newUserEmail, newPassword)) {
                     return;
@@ -140,7 +142,8 @@ public class RegistrationPage extends AppCompatActivity {
     }
 
     // this is a function that will check if all entries are valid according to different conditions
-    public boolean isValidEntry(String firstName, String lastName, CharSequence userBirthDate, CharSequence email, String password) {
+    public boolean isValidEntry(String firstName, String lastName,
+                                CharSequence userBirthDate, CharSequence email, String password) {
 
         //set up edit texts in order to input errors if need be
         final EditText firstEditName = (EditText) findViewById(R.id.etFirstName);
@@ -161,7 +164,8 @@ public class RegistrationPage extends AppCompatActivity {
                 = Pattern.compile(
                 "[a-zA-Z0-9\\!\\@\\#\\$]{3,30}");
 
-        //all if statements below will determine if a relevant entry is valid. If not valid, boolean valid will be set to false and an error will appear in the relevant field.
+        //all if statements below will determine if a relevant entry is valid.
+        // If not valid, boolean valid will be set to false and an error will appear in the relevant field.
         if ((TextUtils.isEmpty(firstName)) || !Name_PATTERN.matcher(firstName).matches()) {
             valid = false;
             firstEditName.setError("Please Input a first name between 3 to 30 characters long");
