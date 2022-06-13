@@ -13,6 +13,7 @@ public class SecuredSharePref implements ISharedPreference {
     public SecuredSharePref(String name, Context context) {
 
 
+        //sets a master key in order to encrypt data.
         MasterKey masterKey = null;
         try {
             masterKey = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
@@ -35,6 +36,7 @@ public class SecuredSharePref implements ISharedPreference {
 
     }
 
+    //Creates and updates shared preferences by using this class
     @Override
     public String get(String name, String value) {
         return sharedPreferences.getString(name, value);

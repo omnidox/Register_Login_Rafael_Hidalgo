@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 
 public class RegistrationPage extends AppCompatActivity {
 
+    //In this App, an encrypted shared preference is implemented to save user information.
     private ISharedPreference sharedPreference;
-
 
 
     @Override
@@ -35,7 +35,8 @@ public class RegistrationPage extends AppCompatActivity {
         Button btnRegister = (Button) findViewById(R.id.btnNewRegister);
 
 
-        //used this site to help implement the code for the text entry https://www.youtube.com/watch?v=Sce4EKklwKE&ab_channel=TechProgrammingIdeas
+        //used this site to help implement the code for the date text entry https://www.youtube.com/watch?v=Sce4EKklwKE&ab_channel=TechProgrammingIdeas
+        //This ensures that the date inputted will match the MM/DD/YYY format
         dateOfBirth.addTextChangedListener(new TextWatcher() {
 
 
@@ -103,11 +104,10 @@ public class RegistrationPage extends AppCompatActivity {
             }
         });
 
+        //This helps configure what happens once the register button is clicked
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                SharedPreferences preferences = getSharedPreferences("MYPREFS",MODE_PRIVATE);
 
                 sharedPreference = new SecuredSharePref("MYPREFS", RegistrationPage.this);
 
@@ -117,123 +117,42 @@ public class RegistrationPage extends AppCompatActivity {
                 String newUserEmail = email.getText().toString();
                 String newPassword = password.getText().toString();
 
-                if (!isValidEntry(newUserFirstName, newUserLastName, newUserDateOfBirth, newUserEmail, newPassword))
-                {
+
+                //This calls on a program to determine if all entries are valid. If not valid, the program ends with "return". If Valid,
+                //the user data is then saved into an encrypted shared preferences.
+                if (!isValidEntry(newUserFirstName, newUserLastName, newUserDateOfBirth, newUserEmail, newPassword)) {
                     return;
                 }
 
-
-//                if (!isValidName(newUserFirstName)){
-//
-//                    Toast.makeText(RegistrationPage.this, "Please Input a name between 3 to 30 characters long ",
-//                            Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-
-
-//                if (!isValidName(newUserLastName)){
-//
-//                    Toast.makeText(RegistrationPage.this, "Please Input a password between 3 to 30 characters long ",
-//                            Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-
-//                if (!isValidDate(newUserDateOfBirth)){
-//
-//                    Toast.makeText(RegistrationPage.this, "Please Input a full birth date",
-//                            Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-
-
-//                if (!isValidEmail(newUserEmail)){
-//
-//                    Toast.makeText(RegistrationPage.this, "Please Input a proper email",
-//                            Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-
-
-//                if (!isValidPassword(newPassword)){
-//
-//                    Toast.makeText(RegistrationPage.this, "Please Input a password between 8 to 24 characters long ",
-//                            Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-
-//                SharedPreferences.Editor editor = preferences.edit();
-
-                    //stores 3 new instances of sharedprefs. Both the user and password's keys are the same as the input.
-                    //Must be done this way because sharedprefs is stupid and inefficient. You cannot store Arrays easily
-                    //so I use strings instead.
-
-
-                    sharedPreference.put(newUserEmail, newUserEmail);
+                //Saves values in a shared preferences called "MYPREFS"
+                sharedPreference.put(newUserEmail, newUserEmail);
                 sharedPreference.put(newPassword, newPassword);
                 sharedPreference.put(newUserEmail + newPassword + "data", newUserFirstName +
                         "\n" + newUserLastName + "\n" + newUserDateOfBirth + "\n" + newUserEmail + "\n" +
                         newPassword);
-//                editor.putString(newUser,newUser);
-//                editor.commit();
-//                editor.putString(newPassword, newPassword);
-//                editor.commit();
-//                editor.putString(newUser + newPassword + "data", newUser + "\n" + newEmail);
-//                editor.commit();
 
+
+                //once the user data is saved, the user is taken back into the login page
                 Intent loginScreen = new Intent(RegistrationPage.this, LoginRegisterPage.class);
                 startActivity(loginScreen);
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
-//    public static boolean isValidEmail(CharSequence target) {
-//        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-//    }
-//
-//    public static boolean isValidPassword(String s) {
-//        Pattern PASSWORD_PATTERN
-//                = Pattern.compile(
-//                "[a-zA-Z0-9\\!\\@\\#\\$]{8,24}");
-//
-//        return !TextUtils.isEmpty(s) && PASSWORD_PATTERN.matcher(s).matches();
-//    }
-//
-//    public static boolean isValidName(String s) {
-//        Pattern PASSWORD_PATTERN
-//                = Pattern.compile(
-//                "[a-zA-Z0-9\\!\\@\\#\\$]{3,30}");
-//
-//        return !TextUtils.isEmpty(s) && PASSWORD_PATTERN.matcher(s).matches();
-//    }
-//
-//    public static boolean isValidDate(CharSequence target) {
-//        return (!TextUtils.isEmpty(target) && !(target.toString().matches(".*[A-Z].*")));
-//    }
-
+    // this is a function that will check if all entries are valid according to different conditions
     public boolean isValidEntry(String firstName, String lastName, CharSequence userBirthDate, CharSequence email, String password) {
 
-
+        //set up edit texts in order to input errors if need be
         final EditText firstEditName = (EditText) findViewById(R.id.etFirstName);
         final EditText lastEditName = (EditText) findViewById(R.id.etLastName);
         final EditText dateOfBirthEdit = (EditText) findViewById(R.id.etDateOfBirth);
         final EditText emailEdit = (EditText) findViewById(R.id.etNewEmail);
         final EditText passwordEdit = (EditText) findViewById(R.id.etNewPassword);
 
+        //boolean valid will remain true unless a an entry is found to not be valid
         boolean valid = true;
+
+        //sets up what pattern will be recognized depending whether it is a password or a name
         Pattern PASSWORD_PATTERN
                 = Pattern.compile(
                 "[a-zA-Z0-9\\!\\@\\#\\$]{8,24}");
@@ -242,46 +161,35 @@ public class RegistrationPage extends AppCompatActivity {
                 = Pattern.compile(
                 "[a-zA-Z0-9\\!\\@\\#\\$]{3,30}");
 
-
+        //all if statements below will determine if a relevant entry is valid. If not valid, boolean valid will be set to false and an error will appear in the relevant field.
         if ((TextUtils.isEmpty(firstName)) || !Name_PATTERN.matcher(firstName).matches()) {
-            Toast.makeText(RegistrationPage.this, "Please Input a first name between 3 to 30 characters long ",
-                    Toast.LENGTH_SHORT).show();
             valid = false;
             firstEditName.setError("Please Input a first name between 3 to 30 characters long");
         }
 
         if ((TextUtils.isEmpty(lastName)) || !Name_PATTERN.matcher(lastName).matches()) {
-            Toast.makeText(RegistrationPage.this, "Please Input a last name between 3 to 30 characters long ",
-                    Toast.LENGTH_SHORT).show();
             valid = false;
             lastEditName.setError(("Please Input a last name between 3 to 30 characters long "));
         }
 
         if (TextUtils.isEmpty(userBirthDate) || (userBirthDate.toString().matches(".*[A-Z].*"))) {
-            Toast.makeText(RegistrationPage.this, "Please Input a full birth date",
-                    Toast.LENGTH_SHORT).show();
             valid = false;
             dateOfBirthEdit.setError("Please Input a full birth date");
         }
 
         //check email fields
         if ((TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
-            Toast.makeText(RegistrationPage.this, "Please Input a proper email",
-                    Toast.LENGTH_SHORT).show();
             valid = false;
             emailEdit.setError("Please Input a proper email");
         }
 
         if ((TextUtils.isEmpty(password)) || !PASSWORD_PATTERN.matcher(password).matches()) {
-            Toast.makeText(RegistrationPage.this, "Please Input a password between 8 to 24 characters long",
-                    Toast.LENGTH_SHORT).show();
             valid = false;
             passwordEdit.setError("Please Input a password between 8 to 24 characters long");
         }
 
 
         return valid;
-
 
     }
 }

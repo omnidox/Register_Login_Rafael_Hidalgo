@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 public class LoginRegisterPage extends AppCompatActivity {
 
+    //In this App, an encrypted shared preference is implemented to save user information.
     private ISharedPreference sharedPreference;
 
     @Override
@@ -34,14 +35,11 @@ public class LoginRegisterPage extends AppCompatActivity {
             public void onClick(View v) {
                 String userEmail = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
-//                SharedPreferences preferences = getSharedPreferences("MYPREFS", MODE_PRIVATE);
 
+
+                //Will set an error on the edit text fields if password or email values are not correct
                 if (!isValidEmail(userEmail) || !isValidPassword(password)) {
                     if (!isValidEmail(userEmail)) {
-
-                        Toast.makeText(LoginRegisterPage.this, "Please Input a proper email",
-                                Toast.LENGTH_SHORT).show();
-
                         etEmail.setError("Please Input a proper email");
                     }
 
@@ -53,15 +51,10 @@ public class LoginRegisterPage extends AppCompatActivity {
                 }
 
 
+                //retrieves information from shared preference to verify if user input matches sharedpreferences data
                 sharedPreference = new SecuredSharePref("MYPREFS", LoginRegisterPage.this);
 
-                //String savedPassword = preferences.getString(password, "");
-                //String savedUserName = preferences.getString(user, "");
-
-
                 String userDetails = sharedPreference.get(userEmail + password + "data", "No information on that user");
-
-
 
                 sharedPreference.put("display", userDetails);
 

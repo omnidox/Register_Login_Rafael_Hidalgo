@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".DisplayScreen">
 
-
+<!--Displays User Content-->
     <TextView
         android:id="@+id/textViewName"
         android:layout_width="327dp"
